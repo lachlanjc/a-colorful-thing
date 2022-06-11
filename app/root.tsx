@@ -4,9 +4,15 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
+import { createClient } from "@liveblocks/client";
+import { LiveblocksProvider } from "@liveblocks/react";
+
+const liveblocksClient = createClient({
+  publicApiKey: "pk_test_G4aL5dByWTvWlxUch1TAy37Z",
+});
 
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };
@@ -22,7 +28,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <LiveblocksProvider client={liveblocksClient}>
+          <Outlet />
+        </LiveblocksProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
