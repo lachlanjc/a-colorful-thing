@@ -2,6 +2,7 @@ import { useOthers, useObject, useList } from '@liveblocks/react'
 import { useState, useEffect, useRef } from 'react'
 import Canvas from '~/components/canvas'
 import { cursorColors } from '~/components/cursors'
+import { CANVAS_SIZE } from '~/root'
 
 export default function Index() {
   const intro = useObject('intro')
@@ -71,7 +72,7 @@ export default function Index() {
         }
 
         main {
-          width: clamp(100%, 66vw, 1024px);
+          width: clamp(100%, 66vw, ${CANVAS_SIZE}px);
           padding-block: 48px;
           text-align: center;
         } 

@@ -22,7 +22,7 @@ export default function Cursors({
             borderRadius: 12,
             border: '2px solid #fff',
             transform: `translate(${cursor.x}px, ${cursor.y}px)`,
-            boxShadow: '0 0 2px #fff',
+            boxShadow: '0 0 4px #fff',
             zIndex: 2,
             position: 'absolute',
             top: 0,

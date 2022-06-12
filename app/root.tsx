@@ -14,7 +14,7 @@ const liveblocksClient = createClient({
   publicApiKey: 'pk_test_G4aL5dByWTvWlxUch1TAy37Z',
 })
 
-export const PIXEL_SIZE = 40
+export const PIXEL_SIZE = 32
 export const AXIS_PIXEL_COUNT = 25
 export const CANVAS_SIZE = PIXEL_SIZE * AXIS_PIXEL_COUNT
 
@@ -29,13 +29,13 @@ console.log(content)
 
 const initialStorage = {
   intro: new LiveObject({
-    name: 'a colorful thing',
+    name: 'a colorful thing :)',
   }),
   canvas: new LiveList(content),
 }
 
 export const meta: MetaFunction = () => {
-  return { title: 'Livebridge' }
+  return { title: 'a colorful thing :)' }
 }
 
 export default function App() {
