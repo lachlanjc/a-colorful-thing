@@ -1,154 +1,63 @@
-import { User } from '@liveblocks/client'
-import {
-  RoomProvider,
-  useOthers,
-  useObject,
-  useUpdateMyPresence,
-} from '@liveblocks/react'
-import { useState, useEffect } from 'react'
-
-const cursorColors =
-  '#ffbb38 #f6609f #dadde0 #b8bcc0 #1f86ff #31805a #ba84ff #fc5100 #1ec072 #ff2424 #ffb4ed #17baff'.split(
-    ' '
-  )
-
-type Cursor = {
-  x: number
-  y: number
-}
-
-type Presence = {
-  cursor: Cursor | null
-}
-
-function useLiveCursors(): (User<Presence> & Cursor)[] {
-  const updateMyPresence = useUpdateMyPresence<Presence>()
-
-  useEffect(() => {
-    let scroll = {
-      x: window.scrollX,
-      y: window.scrollY,
-    }
-
-    let lastPosition: Cursor | null = null
-
-    function transformPosition(cursor: Cursor) {
-      return {
-        x: cursor.x / window.innerWidth,
-        y: cursor.y,
-      }
-    }
-
-    function onPointerMove(event: MouseEvent) {
-      const position = {
-        x: event.pageX,
-        y: event.pageY,
-      }
-      lastPosition = position
-      updateMyPresence({
-        cursor: transformPosition(position),
-      })
-    }
-
-    function onPointerLeave() {
-      lastPosition = null
-      updateMyPresence({ cursor: null })
-    }
-
-    function onDocumentScroll() {
-      if (lastPosition) {
-        const offsetX = window.scrollX - scroll.x
-        const offsetY = window.scrollY - scroll.y
-        const position = {
-          x: lastPosition.x + offsetX,
-          y: lastPosition.y + offsetY,
-        }
-        lastPosition = position
-        updateMyPresence({
-          cursor: transformPosition(position),
-        })
-      }
-      scroll.x = window.scrollX
-      scroll.y = window.scrollY
-    }
-
-    document.addEventListener('scroll', onDocumentScroll)
-    document.addEventListener('pointermove', onPointerMove)
-    document.addEventListener('pointerleave', onPointerLeave)
-
-    return () => {
-      document.removeEventListener('scroll', onDocumentScroll)
-      document.removeEventListener('pointermove', onPointerMove)
-      document.removeEventListener('pointerleave', onPointerLeave)
-    }
-  }, [updateMyPresence])
-
-  const others = useOthers<Presence>()
-
-  return others
-    .toArray()
-    .filter((user) => user.presence?.cursor != null)
-    .map(({ connectionId, presence, id, info }) => {
-      return {
-        x: ((presence as Presence).cursor as Cursor).x * window.innerWidth,
-        y: ((presence as Presence).cursor as Cursor).y,
-        connectionId,
-        id,
-        info,
-        presence,
-      }
-    })
-}
+import { useOthers, useObject, useList } from '@liveblocks/react'
+import { useState, useEffect, useRef } from 'react'
+import Canvas from '~/components/canvas'
+import { cursorColors } from '~/components/cursors'
 
 export default function Index() {
-  const product = useObject('product')
+  const intro = useObject('intro')
   const others = useOthers()
-  const cursors = useLiveCursors()
-
-  const updateMyPresence = useUpdateMyPresence()
-  const pixelSize = 100
+  const [color, setColor] = useState('#ba84ff')
 
   return (
     <main>
-      {cursors.filter(Boolean).map((cursor, i) => (
-        <svg
-          width={50}
-          height={50}
-          viewBox="0 0 50 50"
-          style={{
-            position: 'absolute',
-            left: cursor.x,
-            top: cursor.y,
-            transform: `translate(-50%, -50%)`,
-          }}
-          key={cursor.id}
-        >
-          <circle
-            cx={24}
-            cy={24}
-            r={8}
-            stroke={cursorColors[i]}
-            strokeWidth={2}
-            fill="none"
-          />
-        </svg>
-      ))}
-      <h1 style={{ display: 'flex', gap: 16 }}>
+      <h1>
         <input
           type="text"
-          value={product?.get('name')?.toString() ?? ''}
-          onChange={(e) => product?.update({ name: e.target.value })}
-          style={{ flexGrow: 1 }}
+          value={intro?.get('name')?.toString() ?? ''}
+          onChange={(e) => intro?.update({ name: e.target.value })}
+          style={{ width: '100%' }}
         />
       </h1>
-      <aside>
-        <mark>{others.count}</mark> here now
+      <aside
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 16,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 12,
+        }}
+      >
+        <span style={{ marginRight: 'auto' }}>
+          <mark>{others.count}</mark> here now
+        </span>
+        <input
+          type="color"
+          onChange={(e) => setColor(e.target.value)}
+          value={color}
+        />
+        {cursorColors.map((colorItem) => (
+          <button
+            key={colorItem}
+            onClick={() => setColor(colorItem)}
+            style={{
+              border: 0,
+              background: colorItem,
+              width: 24,
+              height: 24,
+              borderRadius: 12,
+            }}
+          />
+        ))}
       </aside>
-      <p>There's a beautiful Canvas WOW</p>
-      <canvas width={1000} height={1000} />
+      <Canvas color={color} />
       <style>{`
         :root {
           --color-purple: #ba84ff;
+        }
+
+        * {
+          box-sizing: border-box;
         }
 
         body {
@@ -176,18 +85,13 @@ export default function Index() {
           text-align: center;
         }
         
-        canvas {
-          background: white;
-          border-radius: 16px;
-          box-shadow: 0px 30px 60px -12px rgb(50 50 93 / 25%), 0px 18px 36px -18px rgb(0 0 0 / 30%);
-        }
-
         mark {
           width: 5ch;
           display: inline-block;
           background: var(--color-purple);
           color: #fff;
           border-radius: 999px;
+          margin-right: 6px;
         }
       `}</style>
     </main>

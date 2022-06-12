@@ -7,21 +7,35 @@ import {
   ScrollRestoration,
 } from 'remix'
 import type { MetaFunction } from 'remix'
-import { createClient, LiveObject } from '@liveblocks/client'
+import { createClient, LiveObject, LiveList } from '@liveblocks/client'
 import { LiveblocksProvider, RoomProvider } from '@liveblocks/react'
 
 const liveblocksClient = createClient({
   publicApiKey: 'pk_test_G4aL5dByWTvWlxUch1TAy37Z',
 })
 
+export const PIXEL_SIZE = 40
+export const AXIS_PIXEL_COUNT = 25
+export const CANVAS_SIZE = PIXEL_SIZE * AXIS_PIXEL_COUNT
+
+let content = new Array(AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT)
+// for (let i = 0; i < content.length; i++) {
+//   content[i] = new Array(10)
+//   content[i].fill('#FF0000', 0, 10)
+// }
+content.fill('#ffbb38', 0, AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT)
+
+console.log(content)
+
 const initialStorage = {
-  product: new LiveObject({
-    name: 'Livebridge',
+  intro: new LiveObject({
+    name: 'a colorful thing',
   }),
+  canvas: new LiveList(content),
 }
 
 export const meta: MetaFunction = () => {
-  return { title: 'New Remix App' }
+  return { title: 'Livebridge' }
 }
 
 export default function App() {
@@ -33,9 +47,8 @@ export default function App() {
         <Meta />
         <Links />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
         <link
-          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap"
           rel="stylesheet"
         />
       </head>
