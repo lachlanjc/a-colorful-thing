@@ -17,63 +17,29 @@ export default function useLiveCursors(
   const updateMyPresence = useUpdateMyPresence<Presence>()
 
   useEffect(() => {
-    let scroll = {
-      x: window.scrollX,
-      y: window.scrollY,
-    }
-
-    let lastPosition: Cursor | null = null
-
-    function transformPosition(cursor: Cursor) {
-      return {
-        x: cursor.x / window.innerWidth,
-        y: cursor.y,
-      }
-    }
-
     function onPointerMove(event: MouseEvent) {
-      const position = {
-        x: event.pageX,
-        y: event.pageY,
-      }
-      lastPosition = position
+      const offset = canvas?.getBoundingClientRect() ?? { x: 0, y: 0 }
+
+      const x = event.pageX - offset.x - window.scrollX
+      const y = event.pageY - offset.y - window.scrollY
+
       updateMyPresence({
-        cursor: transformPosition(position),
+        cursor: { x, y },
       })
     }
 
     function onPointerLeave() {
-      lastPosition = null
       updateMyPresence({ cursor: null })
-    }
-
-    function onDocumentScroll() {
-      if (lastPosition) {
-        const offsetX = window.scrollX - scroll.x
-        const offsetY = window.scrollY - scroll.y
-        const position = {
-          x: lastPosition.x + offsetX,
-          y: lastPosition.y + offsetY,
-        }
-        lastPosition = position
-        updateMyPresence({
-          cursor: transformPosition(position),
-        })
-      }
-      scroll.x = window.scrollX
-      scroll.y = window.scrollY
     }
 
     if (!canvas) {
       return
     }
 
-    canvas.addEventListener('scroll', onDocumentScroll)
     canvas.addEventListener('pointermove', onPointerMove)
     canvas.addEventListener('pointerleave', onPointerLeave)
 
     return () => {
-      canvas.removeEventListener('scroll', onDocumentScroll)
       canvas.removeEventListener('pointermove', onPointerMove)
       canvas.removeEventListener('pointerleave', onPointerLeave)
     }

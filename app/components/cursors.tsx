@@ -21,12 +21,13 @@ export default function Cursors({
             height: 24,
             borderRadius: 12,
             border: '2px solid #fff',
-            transform: `translate(${cursor.x}px, ${cursor.y}px)`,
+            transform: 'translate(-50%, -50%)',
+            // transform: `translate(${cursor.x}px, ${cursor.y}px)`,
             boxShadow: '0 0 4px #fff',
             zIndex: 2,
             position: 'absolute',
-            top: 0,
-            left: 0,
+            top: cursor.y,
+            left: cursor.x,
           }}
           key={i}
         />

@@ -19,13 +19,7 @@ export const AXIS_PIXEL_COUNT = 25
 export const CANVAS_SIZE = PIXEL_SIZE * AXIS_PIXEL_COUNT
 
 let content = new Array(AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT)
-// for (let i = 0; i < content.length; i++) {
-//   content[i] = new Array(10)
-//   content[i].fill('#FF0000', 0, 10)
-// }
 content.fill('#ffbb38', 0, AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT)
-
-console.log(content)
 
 const initialStorage = {
   intro: new LiveObject({
