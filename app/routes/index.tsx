@@ -9,6 +9,10 @@ export default function Index() {
   const others = useOthers()
   const [color, setColor] = useState('#ba84ff')
 
+  useEffect(() => {
+    window.document.title = intro?.get('name') ?? 'a colorful thing :)'
+  }, [intro?.get('name')])
+
   return (
     <main>
       <h1>
