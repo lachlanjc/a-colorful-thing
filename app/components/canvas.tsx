@@ -1,9 +1,12 @@
 import { useList } from "@liveblocks/react";
 import { useEffect, useRef, useState } from "react";
 import Cursors from "~/components/cursors";
+import { cursorColors } from "~/components/cursors";
 import { CANVAS_SIZE, AXIS_PIXEL_COUNT, PIXEL_SIZE } from "~/root";
 
-export default function Canvas({ color }: { color: string }) {
+export default function Canvas() {
+  const [color, setColor] = useState("#ba84ff");
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasData = useList("canvas");
   const [dataUrl, setDataUrl] = useState("");
@@ -46,7 +49,41 @@ export default function Canvas({ color }: { color: string }) {
   }
 
   return (
-    <>
+    <article>
+      <aside
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 8,
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: 12,
+          width: "100%",
+        }}
+      >
+        <input
+          type="color"
+          onChange={(e) => setColor(e.target.value)}
+          value={color}
+        />
+        {cursorColors.map((colorItem) => (
+          <button
+            key={colorItem}
+            onClick={() => setColor(colorItem)}
+            style={{
+              border: 0,
+              background: colorItem,
+              width: 24,
+              height: 24,
+              borderRadius: 12,
+            }}
+          />
+        ))}
+        <a href={dataUrl} download className="button">
+          Download
+        </a>
+      </aside>
+
       <div className="canvas-border">
         <canvas
           width={CANVAS_SIZE}
@@ -57,9 +94,7 @@ export default function Canvas({ color }: { color: string }) {
         />
         <Cursors canvas={canvasRef.current} />
       </div>
-      <a href={dataUrl} download className="button">
-        Download
-      </a>
+
       <style>{`
           canvas {
             background: white;
@@ -72,18 +107,26 @@ export default function Canvas({ color }: { color: string }) {
             box-shadow: 0px 30px 60px -12px rgb(50 50 93 / 25%), 0px 18px 36px -18px rgb(0 0 0 / 30%);
             display: block;
             line-height: 0;
+            margin-top: 16px;
           }
 
           .button {
             padding: 8px 18px;
             color: #ffb4ed;
             background-color: var(--color-text);
+            transition: 0.5s cubic-bezier(.85,0,.15,1) color, 0.5s cubic-bezier(.85,0,.15,1) background-color;
             border-radius: 6px;
             text-decoration: none;
             font-size: 18px;
             font-weight: 600;
+            margin-left: auto;
+          }
+          .button:hover,
+          .button:focus {
+              background-color: #ffb4ed;
+            color: var(--color-text);
           }
         `}</style>
-    </>
+    </article>
   );
 }

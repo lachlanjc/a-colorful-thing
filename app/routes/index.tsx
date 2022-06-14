@@ -1,13 +1,11 @@
 import { useOthers, useObject } from "@liveblocks/react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Canvas from "~/components/canvas";
-import { cursorColors } from "~/components/cursors";
 import { CANVAS_SIZE } from "~/root";
 
 export default function Index() {
   const intro = useObject("intro");
   const others = useOthers();
-  const [color, setColor] = useState("#ba84ff");
 
   useEffect(() => {
     window.document.title =
@@ -24,45 +22,16 @@ export default function Index() {
           style={{ width: "100%" }}
         />
       </h1>
-      <aside
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 8,
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 12,
-          width: "100%",
-        }}
-      >
-        <span style={{ marginRight: "auto" }}>
-          <mark>{others.count + 1}</mark> here now
-        </span>
-        <input
-          type="color"
-          onChange={(e) => setColor(e.target.value)}
-          value={color}
-        />
-        {cursorColors.map((colorItem) => (
-          <button
-            key={colorItem}
-            onClick={() => setColor(colorItem)}
-            style={{
-              border: 0,
-              background: colorItem,
-              width: 24,
-              height: 24,
-              borderRadius: 12,
-            }}
-          />
-        ))}
-      </aside>
-      <Canvas color={color} />
+      <Canvas />
+      <p>
+        <mark>{others.count + 1}</mark> here now
+      </p>
       <footer>
         <p>
-          Created by @MatthewStanciu, @athenaleong, & @lachlanjc at{" "}
+          Site by @MatthewStanciu, @athenaleong, & @lachlanjc at{" "}
           <a href="https://noisebridge.net">Noisebridge</a> in June 2022.
         </p>
+        <p>Artwork by the wide internet.</p>
         <p>
           <a href="https://github.com/lachlanjc/a-colorful-thing">GitHub</a>
         </p>
@@ -97,10 +66,10 @@ export default function Index() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: clamp(16px, 3vh, 24px);
+          gap: clamp(24px, 5vh, 36px);
         } 
         
-        h1 {
+        h1, main > p {
             margin: 0;
         }
 
