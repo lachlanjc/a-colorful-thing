@@ -34,7 +34,7 @@ export default function Index() {
         }}
       >
         <span style={{ marginRight: 'auto' }}>
-          <mark>{others.count}</mark> here now
+          <mark>{others.count + 1}</mark> here now
         </span>
         <input
           type="color"
