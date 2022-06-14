@@ -1,39 +1,40 @@
-import { useOthers, useObject, useList } from '@liveblocks/react'
-import { useState, useEffect, useRef } from 'react'
-import Canvas from '~/components/canvas'
-import { cursorColors } from '~/components/cursors'
-import { CANVAS_SIZE } from '~/root'
+import { useOthers, useObject } from "@liveblocks/react";
+import { useState, useEffect } from "react";
+import Canvas from "~/components/canvas";
+import { cursorColors } from "~/components/cursors";
+import { CANVAS_SIZE } from "~/root";
 
 export default function Index() {
-  const intro = useObject('intro')
-  const others = useOthers()
-  const [color, setColor] = useState('#ba84ff')
+  const intro = useObject("intro");
+  const others = useOthers();
+  const [color, setColor] = useState("#ba84ff");
 
   useEffect(() => {
-    window.document.title = intro?.get('name') ?? 'a colorful thing :)'
-  }, [intro?.get('name')])
+    window.document.title =
+      intro?.get("name")?.toString() ?? "a colorful thing :)";
+  }, [intro?.get("name")]);
 
   return (
     <main>
       <h1>
         <input
           type="text"
-          value={intro?.get('name')?.toString() ?? ''}
+          value={intro?.get("name")?.toString() ?? ""}
           onChange={(e) => intro?.update({ name: e.target.value })}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
         />
       </h1>
       <aside
         style={{
-          display: 'flex',
-          flexWrap: 'wrap',
+          display: "flex",
+          flexWrap: "wrap",
           gap: 16,
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
           marginBottom: 12,
         }}
       >
-        <span style={{ marginRight: 'auto' }}>
+        <span style={{ marginRight: "auto" }}>
           <mark>{others.count + 1}</mark> here now
         </span>
         <input
@@ -100,5 +101,5 @@ export default function Index() {
         }
       `}</style>
     </main>
-  )
+  );
 }
