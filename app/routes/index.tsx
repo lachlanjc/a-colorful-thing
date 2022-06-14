@@ -28,10 +28,11 @@ export default function Index() {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          gap: 16,
+          gap: 8,
           justifyContent: "center",
           alignItems: "center",
           marginBottom: 12,
+          width: "100%",
         }}
       >
         <span style={{ marginRight: "auto" }}>
@@ -57,8 +58,19 @@ export default function Index() {
         ))}
       </aside>
       <Canvas color={color} />
+      <footer>
+        <p>
+          Created by @MatthewStanciu, @athenaleong, & @lachlanjc at{" "}
+          <a href="https://noisebridge.net">Noisebridge</a> in June 2022.
+        </p>
+        <p>
+          <a href="https://github.com/lachlanjc/a-colorful-thing">GitHub</a>
+        </p>
+      </footer>
       <style>{`
         :root {
+          --color-background: #f4cfff;
+          --color-text: #002e50;
           --color-purple: #ba84ff;
         }
 
@@ -68,22 +80,33 @@ export default function Index() {
 
         body {
           padding: 0;
+          max-width: 100vw;
+          overflow-x: hidden;
           display: grid;
           place-content: center;
           font-family: Syne, system-ui, sans-serif;
           line-height: 1.4;
-          background-color: #f4cfff;
-          color: #002e50;
+          background-color: var(--color-background);
+          color: var(--color-text);
         }
 
         main {
           width: clamp(100%, 66vw, ${CANVAS_SIZE}px);
-          padding-block: 48px;
+          padding-block: clamp(32px, 10vh, 72px);
           text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: clamp(16px, 3vh, 24px);
         } 
+        
+        h1 {
+            margin: 0;
+        }
 
         input {
           font: inherit;
+          color: var(--color-text);
           outline-color: var(--color-purple);
           border-radius: 4px;
           border: 0;
@@ -98,6 +121,13 @@ export default function Index() {
           color: #fff;
           border-radius: 999px;
           margin-right: 6px;
+        }
+        
+        footer {
+            max-width: 40ch;
+        }
+        p a {
+          color: var(--color-purple);
         }
       `}</style>
     </main>

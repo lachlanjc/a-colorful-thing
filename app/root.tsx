@@ -5,32 +5,32 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from 'remix'
-import type { MetaFunction } from 'remix'
-import { createClient, LiveObject, LiveList } from '@liveblocks/client'
-import { LiveblocksProvider, RoomProvider } from '@liveblocks/react'
+} from "remix";
+import type { MetaFunction } from "remix";
+import { createClient, LiveObject, LiveList } from "@liveblocks/client";
+import { LiveblocksProvider, RoomProvider } from "@liveblocks/react";
 
 const liveblocksClient = createClient({
-  publicApiKey: 'pk_test_G4aL5dByWTvWlxUch1TAy37Z',
-})
+  publicApiKey: "pk_test_G4aL5dByWTvWlxUch1TAy37Z",
+});
 
-export const PIXEL_SIZE = 32
-export const AXIS_PIXEL_COUNT = 25
-export const CANVAS_SIZE = PIXEL_SIZE * AXIS_PIXEL_COUNT
+export const PIXEL_SIZE = 32;
+export const AXIS_PIXEL_COUNT = 25;
+export const CANVAS_SIZE = PIXEL_SIZE * AXIS_PIXEL_COUNT;
 
-let content = new Array(AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT)
-content.fill('#ffbb38', 0, AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT)
+let content = new Array(AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT);
+content.fill("#ffbb38", 0, AXIS_PIXEL_COUNT * AXIS_PIXEL_COUNT);
 
 const initialStorage = {
   intro: new LiveObject({
-    name: 'a colorful thing :)',
+    name: "a colorful thing :)",
   }),
   canvas: new LiveList(content),
-}
+};
 
 export const meta: MetaFunction = () => {
-  return { title: 'a colorful thing :)' }
-}
+  return { title: "a colorful thing :)" };
+};
 
 export default function App() {
   return (
@@ -42,7 +42,7 @@ export default function App() {
         <Links />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -57,5 +57,5 @@ export default function App() {
         <LiveReload />
       </body>
     </html>
-  )
+  );
 }

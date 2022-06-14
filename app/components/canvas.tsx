@@ -72,16 +72,16 @@ export default function Canvas({ color }: { color: string }) {
             box-shadow: 0px 30px 60px -12px rgb(50 50 93 / 25%), 0px 18px 36px -18px rgb(0 0 0 / 30%);
             display: block;
             line-height: 0;
-            margin-bottom: clamp(32px, 5vh, 64px);
           }
 
           .button {
-              padding: 8px 18px;
-            margin-top: 16px;
-            background-color: var(--color-purple);
+            padding: 8px 18px;
+            color: #ffb4ed;
+            background-color: var(--color-text);
             border-radius: 6px;
-            color: inherit;
             text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
           }
         `}</style>
     </>
