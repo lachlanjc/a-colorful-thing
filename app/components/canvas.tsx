@@ -10,12 +10,14 @@ export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasData = useList("canvas");
   const [dataUrl, setDataUrl] = useState("");
+  const [time, setTime] = useState('')
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
     setDataUrl(
       getCanvasDataUrl(document.getElementById("canvas") as HTMLCanvasElement)
     );
+    setTime(getTime())
 
     if (!ctx) return;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -46,6 +48,11 @@ export default function Canvas() {
 
   function getCanvasDataUrl(canvas: HTMLCanvasElement) {
     return canvas.toDataURL("png");
+  }
+
+  function getTime() {
+    const now = new Date(Date.now()).toLocaleString()
+    return now.replace(new RegExp(/(:| )/g), '_').replace(',_', '-')
   }
 
   return (
@@ -79,7 +86,7 @@ export default function Canvas() {
             }}
           />
         ))}
-        <a href={dataUrl} download="a-colorful-thing.png" className="button">
+        <a href={dataUrl} download={`a-colorful-thing-${time}`} className="button">
           Download
         </a>
       </aside>
