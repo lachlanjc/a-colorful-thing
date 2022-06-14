@@ -79,7 +79,7 @@ export default function Canvas() {
             }}
           />
         ))}
-        <a href={dataUrl} download className="button">
+        <a href={dataUrl} download="a-colorful-thing.png" className="button">
           Download
         </a>
       </aside>
