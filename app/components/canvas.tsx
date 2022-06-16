@@ -1,11 +1,12 @@
 import { useList } from "@liveblocks/react";
-import { useEffect, useRef, useState } from "react";
+import { Key, KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import Cursors from "~/components/cursors";
 import { cursorColors } from "~/components/cursors";
 import { CANVAS_SIZE, AXIS_PIXEL_COUNT, PIXEL_SIZE } from "~/root";
 
 export default function Canvas() {
   const [color, setColor] = useState("#ba84ff");
+  const [colorPicker, setColorPicker] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasData = useList("canvas");
@@ -31,6 +32,23 @@ export default function Canvas() {
     }
   }, [canvasData?.toArray()]);
 
+  function keyDown(e: KeyboardEvent) {
+    if (e.shiftKey) {
+      setColorPicker(true)
+    }
+  }
+
+  function keyUp(e: KeyboardEvent) {
+    setColorPicker(false)
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyDown)
+    document.addEventListener('keyup', keyUp)
+  }, [])
+
+
+
   function onCanvasClick(e: MouseEvent) {
     const offset = canvasRef.current?.getBoundingClientRect() ?? { x: 0, y: 0 };
 
@@ -42,8 +60,14 @@ export default function Canvas() {
     const index = col * AXIS_PIXEL_COUNT + row;
     console.log({ row, col, index });
 
-    canvasData?.delete(index - 1);
-    canvasData?.insert(color, index - 1);
+    if (colorPicker) {
+      const color = canvasData?.get(index - 1)?.toString() ?? "#FFFFFFF"
+      setColor(color)
+    } 
+    else {
+      canvasData?.delete(index - 1);
+      canvasData?.insert(color, index - 1);
+    }
   }
 
   function getCanvasDataUrl(canvas: HTMLCanvasElement) {
@@ -86,6 +110,12 @@ export default function Canvas() {
             }}
           />
         ))}
+        {colorPicker && <img 
+                          src="/color-picker.png" 
+                          style={{
+                            width:24,
+                            height:24,
+                          }}/>}
         <a href={dataUrl} download={`a-colorful-thing-${time}`} className="button">
           Download
         </a>
