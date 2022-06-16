@@ -26,6 +26,9 @@ export default function Index() {
       <p>
         <mark>{others.count + 1}</mark> here now
       </p>
+      <p>
+        Shift + Click for Color Picker
+      </p>
       <footer>
         <p>
           Site by @MatthewStanciu, @athenaleong, & @lachlanjc at{" "}
